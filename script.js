@@ -1,41 +1,23 @@
-const intro =
-    document.getElementById("intro");
+const intro = document.getElementById("intro");
+const nameSection = document.getElementById("nameSection");
+const letterSection = document.getElementById("letterSection");
+const finalSection = document.getElementById("finalSection");
 
-const nameSection =
-    document.getElementById("nameSection");
+const music = document.getElementById("loveMusic");
+const musicButton = document.getElementById("musicButton");
 
-const letterSection =
-    document.getElementById("letterSection");
-
-const finalSection =
-    document.getElementById("finalSection");
-
-const music =
-    document.getElementById("loveMusic");
-
-const musicButton =
-    document.getElementById("musicButton");
-
-const heartsContainer =
-    document.querySelector(".floating-hearts");
-
-const voiceStatus =
-    document.getElementById("voiceStatus");
-
-const voiceButton =
-    document.querySelector(".voice-button");
-
+const heartsContainer = document.querySelector(".floating-hearts");
+const voiceStatus = document.getElementById("voiceStatus");
+const voiceButton = document.querySelector(".voice-button");
 
 let musicPlaying = false;
-
 let recognition = null;
-
 let alreadyOpened = false;
 
 
-/* =================================
+/* =========================
    VOICE RECOGNITION
-================================= */
+========================= */
 
 function startListening() {
 
@@ -43,24 +25,32 @@ function startListening() {
         return;
     }
 
-
     const SpeechRecognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
-
     if (!SpeechRecognition) {
 
-        voiceStatus.innerHTML =
-            "Voice recognition is not supported in this browser 😔";
+        voiceStatus.textContent =
+            "Please use Google Chrome or Microsoft Edge.";
 
         return;
     }
 
 
-    recognition =
-        new SpeechRecognition();
+    // Stop previous recognition
+    if (recognition) {
 
+        try {
+            recognition.stop();
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+
+    recognition = new SpeechRecognition();
 
     recognition.lang = "en-US";
 
@@ -68,108 +58,240 @@ function startListening() {
 
     recognition.interimResults = false;
 
-
-    voiceStatus.innerHTML =
-        "🎧 Listening... Say it now ❤️";
+    recognition.maxAlternatives = 10;
 
 
-    voiceButton.classList.add(
-        "listening"
-    );
+    voiceStatus.textContent =
+        '🎧 Listening... Say "I am Eva, open my letter" ❤️';
+
+    voiceButton.classList.add("listening");
 
 
-    recognition.start();
+    try {
+
+        recognition.start();
+
+    } catch (error) {
+
+        console.log("Recognition start error:", error);
+
+        voiceButton.classList.remove("listening");
+
+        voiceStatus.textContent =
+            "Please tap the button again.";
+
+        return;
+    }
 
 
-    recognition.onresult =
-        function(event) {
+    /* =========================
+       WHEN VOICE IS DETECTED
+    ========================= */
 
-            const spokenText =
-                event.results[0][0].transcript
-                    .toLowerCase()
-                    .trim();
+    recognition.onresult = function(event) {
+
+        let spokenText =
+            event.results[0][0].transcript
+                .toLowerCase()
+                .trim();
 
 
-            console.log(
-                "Voice:",
-                spokenText
+        console.log(
+            "Original voice:",
+            spokenText
+        );
+
+
+        /*
+        Remove punctuation
+        */
+
+        spokenText =
+            spokenText.replace(
+                /[.,!?]/g,
+                ""
             );
 
 
-            if (
-                spokenText.includes(
-                    "I am Eva, open my letter"
-                )
-            ) {
+        /*
+        Fix spaces
+        */
 
-                alreadyOpened = true;
-
-                voiceStatus.innerHTML =
-                    "❤️ I heard you...";
+        spokenText =
+            spokenText
+                .replace(/\s+/g, " ")
+                .trim();
 
 
-                setTimeout(() => {
+        /*
+        Normalize common speech
+        */
 
-                    openLetter();
-
-                }, 500);
-
-            } else {
-
-                voiceStatus.innerHTML =
-                    '❌ Please say "Open my letter"';
-
-            }
-
-        };
+        spokenText =
+            spokenText
+                .replace(/\bi'm\b/g, "i am")
+                .replace(/\biam\b/g, "i am")
+                .replace(/\be va\b/g, "eva")
+                .replace(/\beva\b/g, "eva");
 
 
-    recognition.onerror =
-        function(event) {
+        console.log(
+            "Normalized voice:",
+            spokenText
+        );
 
-            console.log(
-                "Voice error:",
-                event.error
+
+        /* =========================
+           SECRET PHRASE
+        ========================= */
+
+        const phrase1 =
+            "i am eva open my letter";
+
+        const phrase2 =
+            "i am eva please open my letter";
+
+        const phrase3 =
+            "i am eva can you open my letter";
+
+        const phrase4 =
+            "iam eva open my letter";
+
+
+        /*
+        Exact secret phrase OR
+        very small recognition variations
+        */
+
+        const correctPhrase =
+            spokenText === phrase1 ||
+            spokenText === phrase2 ||
+            spokenText === phrase3 ||
+            spokenText === phrase4 ||
+            spokenText.includes(
+                "i am eva open my letter"
             );
 
 
-            if (
-                event.error ===
-                "not-allowed"
-            ) {
+        /* =========================
+           OPEN PAGE 2
+        ========================= */
 
-                voiceStatus.innerHTML =
-                    "🎙️ Please allow microphone access";
+        if (correctPhrase) {
 
-            } else {
-
-                voiceStatus.innerHTML =
-                    'Try again: "Open my letter" ❤️';
-
-            }
-
-        };
+            alreadyOpened = true;
 
 
-    recognition.onend =
-        function() {
+            voiceStatus.textContent =
+                "❤️ Welcome, Eva...";
+
 
             voiceButton.classList.remove(
                 "listening"
             );
 
-        };
+
+            setTimeout(() => {
+
+                openLetter();
+
+            }, 700);
+
+
+        } else {
+
+            voiceStatus.textContent =
+                '❌ Wrong phrase. Say "I am Eva, open my letter"';
+
+
+            voiceButton.classList.remove(
+                "listening"
+            );
+
+        }
+
+    };
+
+
+    /* =========================
+       VOICE ERROR
+    ========================= */
+
+    recognition.onerror = function(event) {
+
+        console.log(
+            "Voice error:",
+            event.error
+        );
+
+
+        voiceButton.classList.remove(
+            "listening"
+        );
+
+
+        if (
+            event.error === "not-allowed"
+        ) {
+
+            voiceStatus.textContent =
+                "🎙️ Please allow microphone access.";
+
+        }
+
+        else if (
+            event.error === "no-speech"
+        ) {
+
+            voiceStatus.textContent =
+                '🎙️ I didn\'t hear you. Try again.';
+
+        }
+
+        else if (
+            event.error === "audio-capture"
+        ) {
+
+            voiceStatus.textContent =
+                "🎙️ Microphone not found.";
+
+        }
+
+        else {
+
+            voiceStatus.textContent =
+                'Try again: "I am Eva, open my letter" ❤️';
+
+        }
+
+    };
+
+
+    /* =========================
+       VOICE ENDED
+    ========================= */
+
+    recognition.onend = function() {
+
+        voiceButton.classList.remove(
+            "listening"
+        );
+
+    };
+
 }
 
 
-/* =================================
+/* =========================
    PAGE 1 → PAGE 2
-================================= */
+========================= */
 
 function openLetter() {
 
-    if (alreadyOpened === false) {
+    if (!alreadyOpened) {
+
         alreadyOpened = true;
+
     }
 
 
@@ -186,18 +308,22 @@ function openLetter() {
 
         intro.style.display = "none";
 
+
         nameSection.classList.add(
             "active"
         );
 
 
         window.scrollTo({
+
             top: 0,
+
             behavior: "smooth"
+
         });
 
 
-        /* MUSIC STARTS HERE */
+        /* MUSIC STARTS ON PAGE 2 */
 
         music.volume = 0.35;
 
@@ -207,7 +333,7 @@ function openLetter() {
 
                 musicPlaying = true;
 
-                musicButton.innerHTML =
+                musicButton.textContent =
                     "🔊 Music On";
 
             })
@@ -215,7 +341,7 @@ function openLetter() {
 
                 musicPlaying = false;
 
-                musicButton.innerHTML =
+                musicButton.textContent =
                     "🔇 Music Off";
 
             });
@@ -223,13 +349,15 @@ function openLetter() {
 
         createHearts(40);
 
+
     }, 700);
+
 }
 
 
-/* =================================
+/* =========================
    MUSIC
-================================= */
+========================= */
 
 function toggleMusic() {
 
@@ -243,7 +371,7 @@ function toggleMusic() {
 
                 musicPlaying = true;
 
-                musicButton.innerHTML =
+                musicButton.textContent =
                     "🔊 Music On";
 
             })
@@ -261,15 +389,17 @@ function toggleMusic() {
 
         musicPlaying = false;
 
-        musicButton.innerHTML =
+        musicButton.textContent =
             "🔇 Music Off";
+
     }
+
 }
 
 
-/* =================================
-   PAGE 2 → LETTER
-================================= */
+/* =========================
+   PAGE 2 → PAGE 3
+========================= */
 
 function showLetter() {
 
@@ -293,17 +423,21 @@ function showLetter() {
 
 
         window.scrollTo({
+
             top: 0,
+
             behavior: "smooth"
+
         });
 
     }, 700);
+
 }
 
 
-/* =================================
-   LETTER → FINAL
-================================= */
+/* =========================
+   PAGE 3 → PAGE 4
+========================= */
 
 function showFinal() {
 
@@ -330,17 +464,21 @@ function showFinal() {
 
 
         window.scrollTo({
+
             top: 0,
+
             behavior: "smooth"
+
         });
 
     }, 900);
+
 }
 
 
-/* =================================
-   HEARTS
-================================= */
+/* =========================
+   FLOATING HEARTS
+========================= */
 
 function createHearts(amount) {
 
@@ -366,9 +504,7 @@ function createHearts(amount) {
         setTimeout(() => {
 
             const heart =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
             heart.classList.add(
@@ -376,7 +512,7 @@ function createHearts(amount) {
             );
 
 
-            heart.innerHTML =
+            heart.textContent =
                 heartTypes[
                     Math.floor(
                         Math.random() *
@@ -414,18 +550,22 @@ function createHearts(amount) {
 
             }, 13000);
 
+
         }, i * 100);
+
     }
+
 }
 
 
-/* =================================
+/* =========================
    CONTINUOUS HEARTS
-================================= */
+========================= */
 
 setInterval(() => {
 
     if (
+
         nameSection.classList.contains(
             "active"
         ) ||
@@ -437,6 +577,7 @@ setInterval(() => {
         finalSection.classList.contains(
             "active"
         )
+
     ) {
 
         createHearts(1);
@@ -446,9 +587,9 @@ setInterval(() => {
 }, 1000);
 
 
-/* =================================
+/* =========================
    RESTART
-================================= */
+========================= */
 
 function restart() {
 
@@ -459,4 +600,5 @@ function restart() {
     musicPlaying = false;
 
     location.reload();
+
 }
