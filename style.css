@@ -294,8 +294,8 @@ button {
         0 0 60px
         rgba(255,30,100,0.08);
 
-    transform:
-        rotate(0deg);
+    /* Straight paper */
+    transform: rotate(0deg);
 
     overflow: hidden;
 }
@@ -490,7 +490,7 @@ button {
 
     text-align: center;
 
-    padding: 40px 20px;
+    padding: 60px 20px;
 
     background:
         radial-gradient(
@@ -522,11 +522,84 @@ button {
 }
 
 .final-content {
-    max-width: 750px;
+    max-width: 800px;
+
+    width: 100%;
 }
 
+
+/* =========================
+   COUPLE PHOTOS
+========================= */
+
+.couple-photos {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 40px;
+
+    margin-bottom: 35px;
+}
+
+.person {
+    text-align: center;
+}
+
+.person img {
+    width: 155px;
+    height: 155px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 4px solid #ff6b9f;
+
+    box-shadow:
+        0 0 25px
+        rgba(255,40,110,0.45);
+
+    transition: 0.4s;
+}
+
+.person img:hover {
+    transform:
+        scale(1.08);
+}
+
+.person p {
+    margin-top: 12px;
+
+    margin-bottom: 0 !important;
+
+    font-size: 20px !important;
+
+    color: #ffb0c9;
+}
+
+.photo-heart {
+    font-size: 48px;
+
+    animation:
+        heartbeat 1.3s infinite;
+
+    filter:
+        drop-shadow(
+            0 0 15px
+            rgba(255,30,100,0.5)
+        );
+}
+
+
+/* =========================
+   FINAL CONTENT
+========================= */
+
 .huge-heart {
-    font-size: 115px;
+    font-size: 105px;
 
     animation:
         heartbeat 1.4s infinite;
@@ -624,7 +697,8 @@ button {
 }
 
 .again-btn:hover {
-    transform: scale(1.08);
+    transform:
+        scale(1.08);
 }
 
 
@@ -777,8 +851,31 @@ button {
         font-size: 23px;
     }
 
+
+    /* Mobile Photos */
+
+    .couple-photos {
+        gap: 12px;
+
+        margin-bottom: 25px;
+    }
+
+    .person img {
+        width: 105px;
+        height: 105px;
+    }
+
+    .person p {
+        font-size: 17px !important;
+    }
+
+    .photo-heart {
+        font-size: 32px;
+    }
+
+
     .huge-heart {
-        font-size: 80px;
+        font-size: 75px;
     }
 
     .final-content h1 {

@@ -28,14 +28,17 @@ function openLetter() {
 
     intro.style.opacity = "0";
 
-    intro.style.transform = "scale(1.05)";
+    intro.style.transform =
+        "scale(1.05)";
 
 
     setTimeout(() => {
 
         intro.style.display = "none";
 
-        letterSection.classList.add("active");
+        letterSection.classList.add(
+            "active"
+        );
 
     }, 700);
 
@@ -130,7 +133,9 @@ function toggleMusic() {
 
 function showFinal() {
 
-    letterSection.classList.remove("active");
+    letterSection.classList.remove(
+        "active"
+    );
 
     createHearts(50);
 
@@ -140,7 +145,9 @@ function showFinal() {
         letterSection.style.display =
             "none";
 
-        finalSection.classList.add("active");
+        finalSection.classList.add(
+            "active"
+        );
 
         createHearts(60);
 
@@ -172,12 +179,19 @@ function createHearts(amount) {
     ];
 
 
-    for (let i = 0; i < amount; i++) {
+    for (
+        let i = 0;
+        i < amount;
+        i++
+    ) {
 
         setTimeout(() => {
 
             const heart =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             heart.classList.add(
                 "heart-particle"
