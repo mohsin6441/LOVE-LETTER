@@ -1,6 +1,9 @@
 const intro =
     document.getElementById("intro");
 
+const nameSection =
+    document.getElementById("nameSection");
+
 const letterSection =
     document.getElementById("letterSection");
 
@@ -20,72 +23,72 @@ const heartsContainer =
 let musicPlaying = false;
 
 
-/* =========================
-   OPEN LETTER
-========================= */
+/* =================================
+   PAGE 1 → PAGE 2
+   LETTER CLICK
+================================= */
 
 function openLetter() {
+
+    /* Create hearts */
+
+    createHearts(30);
+
+
+    /* Fade first page */
 
     intro.style.opacity = "0";
 
     intro.style.transform =
-        "scale(1.05)";
+        "scale(1.08)";
 
 
     setTimeout(() => {
 
         intro.style.display = "none";
 
-        letterSection.classList.add(
-            "active"
-        );
+        nameSection.classList.add("active");
 
-    }, 700);
-
-
-    /* Start Music */
-
-    music.volume = 0.35;
-
-    music.play()
-        .then(() => {
-
-            musicPlaying = true;
-
-            musicButton.innerHTML =
-                "🔊 Music On";
-
-        })
-        .catch((error) => {
-
-            console.log(
-                "Music could not start:",
-                error
-            );
-
-            musicPlaying = false;
-
-            musicButton.innerHTML =
-                "🔇 Music Off";
-
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
         });
 
 
-    /* Hearts */
+        /* =================================
+           MUSIC STARTS ONLY ON PAGE 2
+        ================================= */
 
-    createHearts(35);
+        music.volume = 0.35;
 
-    setTimeout(() => {
+        music.play()
+            .then(() => {
 
-        createHearts(20);
+                musicPlaying = true;
 
-    }, 1500);
+                musicButton.innerHTML =
+                    "🔊 Music On";
+
+            })
+            .catch(() => {
+
+                musicPlaying = false;
+
+                musicButton.innerHTML =
+                    "🔇 Music Off";
+
+            });
+
+
+        createHearts(40);
+
+    }, 700);
 }
 
 
-/* =========================
+/* =================================
    MUSIC ON / OFF
-========================= */
+================================= */
 
 function toggleMusic() {
 
@@ -102,15 +105,10 @@ function toggleMusic() {
                     "🔊 Music On";
 
             })
-            .catch((error) => {
-
-                console.log(
-                    "Music error:",
-                    error
-                );
+            .catch(() => {
 
                 alert(
-                    "Music play korte abar button-e click koro ❤️"
+                    "Music play korte abar click koro ❤️"
                 );
 
             });
@@ -127,9 +125,38 @@ function toggleMusic() {
 }
 
 
-/* =========================
-   SHOW FINAL
-========================= */
+/* =================================
+   PAGE 2 → LETTER
+================================= */
+
+function showLetter() {
+
+    nameSection.classList.remove("active");
+
+    createHearts(35);
+
+
+    setTimeout(() => {
+
+        nameSection.style.display =
+            "none";
+
+        letterSection.classList.add(
+            "active"
+        );
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }, 700);
+}
+
+
+/* =================================
+   LETTER → FINAL
+================================= */
 
 function showFinal() {
 
@@ -160,9 +187,9 @@ function showFinal() {
 }
 
 
-/* =========================
+/* =================================
    CREATE HEARTS
-========================= */
+================================= */
 
 function createHearts(amount) {
 
@@ -241,13 +268,17 @@ function createHearts(amount) {
 }
 
 
-/* =========================
+/* =================================
    CONTINUOUS HEARTS
-========================= */
+================================= */
 
 setInterval(() => {
 
     if (
+        nameSection.classList.contains(
+            "active"
+        ) ||
+
         letterSection.classList.contains(
             "active"
         ) ||
@@ -264,9 +295,9 @@ setInterval(() => {
 }, 1000);
 
 
-/* =========================
+/* =================================
    RESTART
-========================= */
+================================= */
 
 function restart() {
 
