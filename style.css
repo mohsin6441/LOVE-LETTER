@@ -10,52 +10,38 @@ html {
 
 body {
     min-height: 100vh;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
+    font-family: Georgia, "Times New Roman", serif;
     background: #16000d;
-
     color: white;
-
     overflow-x: hidden;
 }
 
 button {
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
+    font-family: Georgia, "Times New Roman", serif;
     border: none;
-
     cursor: pointer;
 }
 
 
 /* =================================
-   MUSIC
+   MUSIC BUTTON
 ================================= */
 
 .music-control {
     position: fixed;
-
     top: 20px;
     right: 20px;
-
     z-index: 500;
 
     padding: 10px 17px;
 
     border-radius: 30px;
 
-    background: rgba(255,255,255,0.10);
+    background: rgba(255, 255, 255, 0.10);
 
     backdrop-filter: blur(10px);
 
-    border: 1px solid rgba(255,255,255,0.18);
+    border: 1px solid rgba(255, 255, 255, 0.18);
 
     color: white;
 
@@ -65,8 +51,7 @@ button {
 }
 
 .music-control:hover {
-    background: rgba(255,255,255,0.20);
-
+    background: rgba(255, 255, 255, 0.20);
     transform: scale(1.05);
 }
 
@@ -81,7 +66,6 @@ button {
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     position: relative;
@@ -91,7 +75,7 @@ button {
     background:
         radial-gradient(
             circle at center,
-            rgba(255,30,110,0.22),
+            rgba(255, 30, 110, 0.22),
             transparent 42%
         ),
         linear-gradient(
@@ -100,6 +84,10 @@ button {
             #43001f,
             #16000d
         );
+
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
 }
 
 .intro::before {
@@ -112,8 +100,7 @@ button {
 
     border-radius: 50%;
 
-    background:
-        rgba(255,20,100,0.10);
+    background: rgba(255, 20, 100, 0.10);
 
     filter: blur(130px);
 }
@@ -124,18 +111,16 @@ button {
     z-index: 2;
 
     width: 100%;
+    max-width: 1000px;
 
-    max-width: 900px;
-
-    min-height: 500px;
+    min-height: 650px;
 
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
-    gap: 80px;
+    gap: 65px;
 }
 
 
@@ -169,7 +154,7 @@ button {
     filter:
         drop-shadow(
             0 30px 35px
-            rgba(0,0,0,0.55)
+            rgba(0, 0, 0, 0.55)
         );
 }
 
@@ -191,11 +176,8 @@ button {
 
     border:
         2px solid
-        rgba(255,255,255,0.7);
+        rgba(255, 255, 255, 0.7);
 }
-
-
-/* Envelope diagonal folds */
 
 .envelope-body::before {
     content: "";
@@ -216,7 +198,7 @@ button {
 
     border-bottom:
         145px solid
-        rgba(190,45,90,0.14);
+        rgba(190, 45, 90, 0.14);
 }
 
 .envelope-body::after {
@@ -238,11 +220,8 @@ button {
 
     border-bottom:
         145px solid
-        rgba(255,255,255,0.38);
+        rgba(255, 255, 255, 0.38);
 }
-
-
-/* Envelope flap */
 
 .envelope-flap {
     position: absolute;
@@ -268,12 +247,9 @@ button {
     filter:
         drop-shadow(
             0 3px 3px
-            rgba(0,0,0,0.12)
+            rgba(0, 0, 0, 0.12)
         );
 }
-
-
-/* Heart seal */
 
 .heart-seal {
     position: absolute;
@@ -292,7 +268,6 @@ button {
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     border-radius: 50%;
@@ -306,7 +281,7 @@ button {
 
     box-shadow:
         0 8px 25px
-        rgba(150,0,60,0.35);
+        rgba(150, 0, 60, 0.35);
 
     font-size: 27px;
 
@@ -316,7 +291,7 @@ button {
 
 
 /* =================================
-   ANIME
+   ANIME CHARACTER
 ================================= */
 
 .anime-character {
@@ -324,7 +299,7 @@ button {
 
     align-self: flex-end;
 
-    margin-bottom: -100px;
+    margin-bottom: -20px;
 
     animation:
         animeFloat 3.5s ease-in-out infinite;
@@ -334,7 +309,6 @@ button {
     display: block;
 
     width: 100%;
-
     height: auto;
 
     object-fit: contain;
@@ -342,8 +316,105 @@ button {
     filter:
         drop-shadow(
             0 20px 25px
-            rgba(0,0,0,0.45)
+            rgba(0, 0, 0, 0.45)
         );
+}
+
+
+/* =================================
+   VOICE BOX
+================================= */
+
+.voice-box {
+    position: absolute;
+
+    bottom: 5px;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 20;
+
+    text-align: center;
+
+    width: 100%;
+    max-width: 430px;
+
+    padding: 18px 25px;
+
+    border-radius: 25px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(12px);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.35);
+}
+
+.voice-icon {
+    font-size: 28px;
+
+    margin-bottom: 5px;
+}
+
+.voice-title {
+    color: #ffb0c9;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    margin-bottom: 5px;
+}
+
+.voice-status {
+    font-size: 13px;
+
+    color:
+        rgba(255, 255, 255, 0.7);
+
+    margin-bottom: 12px;
+}
+
+.voice-button {
+    padding:
+        11px 25px;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #a60046,
+            #ed246d
+        );
+
+    color: white;
+
+    font-size: 14px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(237, 36, 109, 0.35);
+
+    transition: 0.3s;
+}
+
+.voice-button:hover {
+    transform: scale(1.07);
+}
+
+.voice-button.listening {
+    animation:
+        voicePulse 1s infinite;
 }
 
 
@@ -357,7 +428,6 @@ button {
     display: none;
 
     justify-content: center;
-
     align-items: center;
 
     text-align: center;
@@ -369,7 +439,7 @@ button {
     background:
         radial-gradient(
             circle at 50% 40%,
-            rgba(255,40,110,0.20),
+            rgba(255, 40, 110, 0.20),
             transparent 38%
         ),
         linear-gradient(
@@ -417,7 +487,7 @@ button {
     filter:
         drop-shadow(
             0 0 25px
-            rgba(255,40,110,0.5)
+            rgba(255, 40, 110, 0.5)
         );
 }
 
@@ -443,7 +513,7 @@ button {
 
     text-shadow:
         0 0 30px
-        rgba(255,40,110,0.35);
+        rgba(255, 40, 110, 0.35);
 }
 
 .name-content h1 span {
@@ -479,7 +549,7 @@ button {
 
     box-shadow:
         0 10px 35px
-        rgba(236,36,109,0.35);
+        rgba(236, 36, 109, 0.35);
 
     transition: 0.3s;
 }
@@ -499,7 +569,6 @@ button {
     display: none;
 
     justify-content: center;
-
     align-items: center;
 
     padding: 70px 20px;
@@ -507,7 +576,7 @@ button {
     background:
         radial-gradient(
             circle at 50% 50%,
-            rgba(255,40,110,0.13),
+            rgba(255, 40, 110, 0.13),
             transparent 40%
         ),
         #210010;
@@ -557,7 +626,7 @@ button {
 
     box-shadow:
         0 35px 90px
-        rgba(0,0,0,0.65);
+        rgba(0, 0, 0, 0.65);
 
     overflow: hidden;
 }
@@ -593,7 +662,7 @@ button {
 
     border-bottom:
         1px solid
-        rgba(130,0,50,0.15);
+        rgba(130, 0, 50, 0.15);
 
     color: #a40048;
 
@@ -672,7 +741,8 @@ button {
 
     margin: 35px auto 0;
 
-    padding: 15px 30px;
+    padding:
+        15px 30px;
 
     border-radius: 40px;
 
@@ -707,7 +777,6 @@ button {
     display: none;
 
     justify-content: center;
-
     align-items: center;
 
     text-align: center;
@@ -717,7 +786,7 @@ button {
     background:
         radial-gradient(
             circle at center,
-            rgba(255,20,100,0.22),
+            rgba(255, 20, 100, 0.22),
             transparent 45%
         ),
         #16000d;
@@ -755,7 +824,6 @@ button {
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     gap: 40px;
@@ -775,11 +843,13 @@ button {
 
     border-radius: 50%;
 
-    border: 4px solid #ff6b9f;
+    border:
+        4px solid
+        #ff6b9f;
 
     box-shadow:
         0 0 25px
-        rgba(255,40,110,0.45);
+        rgba(255, 40, 110, 0.45);
 }
 
 .person p {
@@ -822,7 +892,8 @@ button {
 
     color: #ff6b9f;
 
-    margin: 5px 0 15px;
+    margin:
+        5px 0 15px;
 }
 
 .final-content > p {
@@ -860,7 +931,8 @@ button {
 .final-names span {
     color: #ff4f8a;
 
-    margin: 0 10px;
+    margin:
+        0 10px;
 
     animation:
         heartbeat 1.2s infinite;
@@ -869,7 +941,8 @@ button {
 .again-btn {
     margin-top: 35px;
 
-    padding: 15px 32px;
+    padding:
+        15px 32px;
 
     border-radius: 40px;
 
@@ -964,13 +1037,13 @@ button {
     from {
         text-shadow:
             0 0 5px
-            rgba(255,40,110,0.1);
+            rgba(255, 40, 110, 0.1);
     }
 
     to {
         text-shadow:
             0 0 20px
-            rgba(255,40,110,0.45);
+            rgba(255, 40, 110, 0.45);
     }
 }
 
@@ -1004,6 +1077,27 @@ button {
     }
 }
 
+@keyframes voicePulse {
+
+    0% {
+        box-shadow:
+            0 0 0 0
+            rgba(237, 36, 109, 0.7);
+    }
+
+    70% {
+        box-shadow:
+            0 0 0 15px
+            rgba(237, 36, 109, 0);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 0
+            rgba(237, 36, 109, 0);
+    }
+}
+
 
 /* =================================
    MOBILE
@@ -1013,27 +1107,29 @@ button {
 
     .music-control {
         top: 12px;
-
         right: 12px;
 
         font-size: 11px;
 
-        padding: 8px 12px;
+        padding:
+            8px 12px;
     }
 
 
     .first-page {
-        min-height: 650px;
+        min-height: 700px;
 
         flex-direction: column;
 
-        gap: 10px;
+        gap: 5px;
+
+        padding:
+            20px 10px 150px;
     }
 
 
     .envelope {
         width: 310px;
-
         height: 215px;
     }
 
@@ -1054,7 +1150,32 @@ button {
     .anime-character {
         width: 190px;
 
-        margin-bottom: -20px;
+        margin-bottom: 0;
+    }
+
+
+    .voice-box {
+        bottom: 10px;
+
+        width: 90%;
+
+        padding:
+            14px 18px;
+    }
+
+    .voice-title {
+        font-size: 15px;
+    }
+
+    .voice-status {
+        font-size: 12px;
+    }
+
+    .voice-button {
+        padding:
+            10px 22px;
+
+        font-size: 13px;
     }
 
 
@@ -1082,11 +1203,13 @@ button {
 
 
     .letter-section {
-        padding: 35px 14px;
+        padding:
+            35px 14px;
     }
 
     .letter-paper {
-        padding: 35px 23px;
+        padding:
+            35px 23px;
     }
 
     .letter-content h2 {

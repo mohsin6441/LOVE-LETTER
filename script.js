@@ -19,23 +19,162 @@ const musicButton =
 const heartsContainer =
     document.querySelector(".floating-hearts");
 
+const voiceStatus =
+    document.getElementById("voiceStatus");
+
+const voiceButton =
+    document.querySelector(".voice-button");
+
 
 let musicPlaying = false;
+
+let recognition = null;
+
+let alreadyOpened = false;
+
+
+/* =================================
+   VOICE RECOGNITION
+================================= */
+
+function startListening() {
+
+    if (alreadyOpened) {
+        return;
+    }
+
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+        voiceStatus.innerHTML =
+            "Voice recognition is not supported in this browser 😔";
+
+        return;
+    }
+
+
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang = "en-US";
+
+    recognition.continuous = false;
+
+    recognition.interimResults = false;
+
+
+    voiceStatus.innerHTML =
+        "🎧 Listening... Say it now ❤️";
+
+
+    voiceButton.classList.add(
+        "listening"
+    );
+
+
+    recognition.start();
+
+
+    recognition.onresult =
+        function(event) {
+
+            const spokenText =
+                event.results[0][0].transcript
+                    .toLowerCase()
+                    .trim();
+
+
+            console.log(
+                "Voice:",
+                spokenText
+            );
+
+
+            if (
+                spokenText.includes(
+                    "I am Eva, open my letter"
+                )
+            ) {
+
+                alreadyOpened = true;
+
+                voiceStatus.innerHTML =
+                    "❤️ I heard you...";
+
+
+                setTimeout(() => {
+
+                    openLetter();
+
+                }, 500);
+
+            } else {
+
+                voiceStatus.innerHTML =
+                    '❌ Please say "Open my letter"';
+
+            }
+
+        };
+
+
+    recognition.onerror =
+        function(event) {
+
+            console.log(
+                "Voice error:",
+                event.error
+            );
+
+
+            if (
+                event.error ===
+                "not-allowed"
+            ) {
+
+                voiceStatus.innerHTML =
+                    "🎙️ Please allow microphone access";
+
+            } else {
+
+                voiceStatus.innerHTML =
+                    'Try again: "Open my letter" ❤️';
+
+            }
+
+        };
+
+
+    recognition.onend =
+        function() {
+
+            voiceButton.classList.remove(
+                "listening"
+            );
+
+        };
+}
 
 
 /* =================================
    PAGE 1 → PAGE 2
-   LETTER CLICK
 ================================= */
 
 function openLetter() {
 
-    /* Create hearts */
+    if (alreadyOpened === false) {
+        alreadyOpened = true;
+    }
+
 
     createHearts(30);
 
-
-    /* Fade first page */
 
     intro.style.opacity = "0";
 
@@ -47,7 +186,10 @@ function openLetter() {
 
         intro.style.display = "none";
 
-        nameSection.classList.add("active");
+        nameSection.classList.add(
+            "active"
+        );
+
 
         window.scrollTo({
             top: 0,
@@ -55,11 +197,10 @@ function openLetter() {
         });
 
 
-        /* =================================
-           MUSIC STARTS ONLY ON PAGE 2
-        ================================= */
+        /* MUSIC STARTS HERE */
 
         music.volume = 0.35;
+
 
         music.play()
             .then(() => {
@@ -87,7 +228,7 @@ function openLetter() {
 
 
 /* =================================
-   MUSIC ON / OFF
+   MUSIC
 ================================= */
 
 function toggleMusic() {
@@ -95,6 +236,7 @@ function toggleMusic() {
     if (music.paused) {
 
         music.volume = 0.35;
+
 
         music.play()
             .then(() => {
@@ -131,7 +273,10 @@ function toggleMusic() {
 
 function showLetter() {
 
-    nameSection.classList.remove("active");
+    nameSection.classList.remove(
+        "active"
+    );
+
 
     createHearts(35);
 
@@ -141,9 +286,11 @@ function showLetter() {
         nameSection.style.display =
             "none";
 
+
         letterSection.classList.add(
             "active"
         );
+
 
         window.scrollTo({
             top: 0,
@@ -164,6 +311,7 @@ function showFinal() {
         "active"
     );
 
+
     createHearts(50);
 
 
@@ -172,11 +320,14 @@ function showFinal() {
         letterSection.style.display =
             "none";
 
+
         finalSection.classList.add(
             "active"
         );
 
+
         createHearts(60);
+
 
         window.scrollTo({
             top: 0,
@@ -188,7 +339,7 @@ function showFinal() {
 
 
 /* =================================
-   CREATE HEARTS
+   HEARTS
 ================================= */
 
 function createHearts(amount) {
